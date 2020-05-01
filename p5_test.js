@@ -3,42 +3,41 @@ let x = 0;
 let h = 2000;
 let w = 4000;
 
-var twitter_oauth = {
-  consumer_key: "OagIQuHT5iMiUL35EQ6slIbLI",
-  consumer_secret: "6bSugZrMA86abapMZUF6jiFEtQAD8pnQkM6hM5d7H9Nh6cCken",
-  token: "2712279546-0k61aaiudFUnmhwV55HfP1Aw1Iqfj2AIAp9cCo4",
-  token_secret: "QEasKF1Z2ddh7rHMFPVwUswqVOMcwXthivs7RCAjSHVnk"
-};
+let c = 60;
+let a = 25;
+let r = 100;
+let angle = 30;
+let tex;
 
-function setup() {
-  createCanvas(w, h);
-  let url = 'https://api.twitter.com/1.1/search/tweets.json?q=feel';
-  httpDo (
-    url, 
-    {
-      method: 'GET',
-      headers : { authorization : twitter_oauth },
-    },
-    function(response) {
-          resp = response;
-    }
-  );
+function setup() 
+{
+  createCanvas(w, h, WEBGL);
+  tex = createGraphics(800, 800);
 }
 
+function draw() 
+{
+  background(0);
+  push();
+  //translate(200*100, 200)
+  let x = r + c * cos(a);
 
-function draw() {
-  if (!resp) { //wait for api call to complete
-    return;
-  }
-  
-  print(resp);
-  //let p = resp.features[0].properties.place;
-  //let m = resp.features[0].properties.mag;
-  
-  fill(0);
-  textSize(100);
-  text(p, w/2, h/4);
-  
-  fill(m * 50, 0, 0);
-  ellipse(w/2,h/2, m * 50, m * 50);
+  let y = r + c * sin(a);
+
+  tex.fill(frameCount, 12, random(c));
+  tex.ellipse(x * 15, y + 300, 20, 30);
+
+  c += 0.6;
+  a += 0.1;
+  pop();
+
+  push();
+  texture(tex);
+  rotateX(angle);
+  rotateY(angle);
+  rotateZ(angle);
+  sphere(222);
+
+  angle += 0.0010*10;
+  pop();
 }
