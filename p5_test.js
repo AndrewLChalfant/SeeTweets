@@ -10,11 +10,12 @@ let angle = 30;
 let tex;
 
 let url = "https://sheets.googleapis.com/v4/spreadsheets/1tjvDbvUsSogN2CK5RrXXntTHlWSRl-1T4UiUJJLw5gA/values/Sheet1!";
-let range = "B2:B10";
+let range = "B2:B20";
 let key = "?key=###";
 let sheets = url + range + key;
 let flip = true; 
 let z;
+let emotion = [0, 0, 0, 0];
 
 function setup() 
 {
@@ -28,19 +29,28 @@ function setup()
 function draw() 
 {
   if (!resp) {
-    return;
-  }
-  if (flip) {
-    z = convert(resp.values);
-    flip = false;
+    return; //wait for http response
   }
   
+  //convert json response to dict a single time time
+  if (flip) {
+    z = convert(resp.values); 
+    for (let i = 0; i < z.length; i++) {
+      emotion[0] += analysis(z[i])[0];
+      emotion[1] += analysis(z[i])[1];
+      emotion[2] += analysis(z[i])[2];
+      emotion[3] += analysis(z[i])[3];
+    }
+    flip = false;
+    print(emotion); //cumulative emotional scores from tweets
+  }
+  
+  //begin actually drawing
   background(0);
   push();
   
   //translate(200*100, 200)
   let x = r + c * cos(a);
-
   let y = r + c * sin(a);
 
   tex.fill(frameCount, 12, random(c));
@@ -61,6 +71,7 @@ function draw()
   pop();
 }
 
+//get tweets from google sheet and return dict of relevant strings
 function convert(z){
   let arr = [];
   for (let i = 0; i < z.length; i++) {
@@ -69,5 +80,19 @@ function convert(z){
     arr.push(tweet);
   }
   print(arr);
+  return arr;
+}
+
+//takes string and returns array of 4 floats scoring emotions
+function analysis(s) {
+  let arr = [0, 0, 0, 0];
+  if (s.includes("sad" || "cry" || "lone")) {
+    arr[0] = 1; }
+  if (s.includes("happy" || "yay" || "glad")) {
+    arr[1] = 1; }
+  if (s.includes("mad" || "angry" || "upset")) {
+    arr[2] = 1;}
+  if (s.includes("love" || "loving" || "heart")) {
+    arr[3] = 1;}
   return arr;
 }
