@@ -24,7 +24,7 @@ let emotion = [0, 0, 0, 0];
 function setup() 
 {
   createCanvas(w, h, WEBGL);
-  tex = createGraphics(800, 800);
+  tex = createGraphics(400, 400);
   httpGet(sheets, 'jsonp', false, function(response) {
     resp = response;
   });
@@ -50,13 +50,14 @@ function draw()
       emotion[3] += analysis(z[i])[3];
     }
     flip = false;
+    
     print(emotion); //cumulative emotional scores from tweets
     let sad_perc = (100 * (emotion[0] / r_max)).toFixed(2) + "% sad tweets. ";
     let happy_perc = (100 * (emotion[1] / r_max)).toFixed(2) + "% happy tweets. ";
     let mad_perc = (100 * (emotion[2] / r_max)).toFixed(2) + "% mad tweets. ";
     let love_perc = (100 * (emotion[3] / r_max)).toFixed(2) + "% love tweets. ";
     text.text(sad_perc + happy_perc + mad_perc + love_perc + "Sample size " + r_max, 
-    width * 0.2, height * 0.3);
+    width * 0.5, height * 0.3);
   }
   
   //begin actually drawing
