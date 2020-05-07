@@ -1,7 +1,7 @@
 let resp;
 let x = 0;
-let h = 2000;
-let w = 4000;
+let h = 1000;
+let w = 1000;
 
 let c = 60;
 let a = 25;
