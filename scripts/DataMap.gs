@@ -1,3 +1,5 @@
+//Linked to a spreadsheet on Andrew's account. Don't change
+
 //Handles the saving of data through a Map like structure
 //Saves everything into a spreadsheet
 //Stored as key value pairs.
@@ -65,7 +67,7 @@ DataMap.prototype.set2 = function(key, value) {
   var v = parseInt(this.sheet.getRange(1, 2).getValue());
   //Logger.log(v);
   //the key is not existent so add to a new row
-  for(i = v - 10; i < this.sheet.getMaxRows(); i++){
+  for(i = v; i < this.sheet.getMaxRows(); i++){
       if(this.sheet.getRange(i, 1).getValue() == "" && this.sheet.getRange(i, 2).getValue() == "")
       {
         this.sheet.getRange(i, 1).setValue(key);

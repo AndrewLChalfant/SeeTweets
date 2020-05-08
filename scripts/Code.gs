@@ -53,5 +53,5 @@ if (responseApi.getResponseCode() == 200) {
       }
     }
   }
-  dataMap.set('count', count + i);
+  //dataMap.set('count', count + i);
 }
