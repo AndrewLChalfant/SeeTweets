@@ -1,45 +1,45 @@
 let resp;
 let x = 0;
-let h = 800;
-let w = 1500;
-
-let c = 60;
-let a = 25;
-let r = 100;
-let angle = 30;
-let tex;
-
+let h = 1000;
+let w = 1000;
 let text;
 let flip = true; 
 let z;
 
 let url = "https://sheets.googleapis.com/v4/spreadsheets/1tjvDbvUsSogN2CK5RrXXntTHlWSRl-1T4UiUJJLw5gA/values/Sheet1!";
-let r_max = 5000; //HOW MANY TWEETS TO FETCH, 5000 seems to be the max
+let r_max = 10; //HOW MANY TWEETS TO FETCH, 5000 seems to be the max
 let range = "B2:B" + r_max;
-
 let key = "?key=AIzaSyCEQ1fTLIunpWw7aMdFXgfyQ6lvkN4kiZc";
 let sheets = url + range + key;
 let emotion = [0, 0, 0, 0];
 
-function setup() 
-{
-  createCanvas(w, h, WEBGL);
-  tex = createGraphics(400, 400);
+function setup() { 
+  pixelDensity(1);
+  var canvas = createCanvas(windowWidth, windowHeight, WEBGL);
+  setAttributes('antialias', true);
+  var state = {
+    distance : 200
+  };
+  
+  tex = createGraphics(windowWidth, windowHeight);
   httpGet(sheets, 'jsonp', false, function(response) {
     resp = response;
   });
+  
   text = createGraphics(window.innerWidth - 4, window.innerHeight - 4);
   text.fill(100);
   text.textSize(50);
+} 
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
-
-function draw() 
-{
+//begin actually drawing
+function draw(){
   if (!resp) {
     return; //wait for http response
   }
-  
   //convert json response to dict a single time time
   if (flip) {
     z = convert(resp.values); 
@@ -50,8 +50,8 @@ function draw()
       emotion[3] += analysis(z[i])[3];
     }
     flip = false;
-    
     print(emotion); //cumulative emotional scores from tweets
+    
     let sad_perc = (100 * (emotion[0] / r_max)).toFixed(2) + "% sad tweets. ";
     let happy_perc = (100 * (emotion[1] / r_max)).toFixed(2) + "% happy tweets. ";
     let mad_perc = (100 * (emotion[2] / r_max)).toFixed(2) + "% mad tweets. ";
@@ -60,33 +60,32 @@ function draw()
     width * 0.5, height * 0.3);
   }
   
-  //begin actually drawing
-  background(0);
-  push();
-  //translate(200*100, 200)
-  let x = r + c * cos(a);
-  let y = r + c * sin(a);
+  camera(30, 60, -20 + sin(frameCount * 0.003) * 400, 90, 180, -60, frameCount, 1, -frameCount);
+  plane(200, 200);
+  background(125);
+  ambientLight(100);
+  pointLight(255, 255, 255, 0, 0, 0);
+  noStroke();
+  randomSeed(69);
+  
+  for(var i = 0; i < 100; i++){
+    var m = 250;
+    var tx = random(-m, m);
+    var ty = random(-m, m);
+    var tz = random(-m, m);
+    var r = ((tx / m) * 0.5 + 0.5) * 255;
+    var g = ((ty / m) * 0.5 + 0.5) * r/4;
+    var b = ((tz / m) * 0.5 + 0.5) * g*6;
+    push();
+    translate(tx, ty, tz);
+    ambientMaterial(r,g,b);
+    sphere(random(10,30));
+    pop();
+  }
 
-  tex.fill(frameCount, 12, random(c));
-  tex.ellipse(x * 15, y + 300, 20, 30);
-
-  c += 0.6;
-  a += 0.1;
-  pop();
-
-  push();
-  texture(tex);
-  rotateX(angle);
-  rotateY(angle);
-  rotateZ(angle);
-  sphere(222);
-
-  angle += 0.0010*10;
-  pop();
-  texture(text);
-  plane(window.innerWidth - 4, window.innerHeight - 4);
 }
 
+//plane(window.innerWidth - 4, window.innerHeight - 4);
 //get tweets from google sheet and return dict of relevant strings
 function convert(z){
   let arr = [];
@@ -98,7 +97,6 @@ function convert(z){
   print(arr);
   return arr;
 }
-
 
 //takes string and returns array of 4 floats scoring emotions
 function analysis(s) {

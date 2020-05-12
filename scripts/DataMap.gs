@@ -3,11 +3,16 @@
 //Handles the saving of data through a Map like structure
 //Saves everything into a spreadsheet
 //Stored as key value pairs.
+var prev = 0;
 
-function DataMap(){
-  url=''
+function DataMap(live){
+  url='https://docs.google.com/spreadsheets/d/1tjvDbvUsSogN2CK5RrXXntTHlWSRl-1T4UiUJJLw5gA/edit'
   this.spreadsheet = SpreadsheetApp.openByUrl(url);
-  this.sheet = this.spreadsheet.getSheets()[0];
+  if (live == 0) {
+    this.sheet = this.spreadsheet.getSheets()[0];
+  } else {
+    this.sheet = this.spreadsheet.getSheets()[1];
+  }
   this.range = this.sheet.getRange(1, 1, this.sheet.getMaxRows(), 2);
   this.values = this.range.getValues();
   this.url = url;
@@ -62,18 +67,29 @@ DataMap.prototype.set = function(key, value) {
   }
 }
 
-//set a value with its key, value
+//set a value with its key, value. Start parsing based on count
 DataMap.prototype.set2 = function(key, value) {
   var v = parseInt(this.sheet.getRange(1, 2).getValue());
   //Logger.log(v);
   //the key is not existent so add to a new row
   for(i = v; i < this.sheet.getMaxRows(); i++){
-      if(this.sheet.getRange(i, 1).getValue() == "" && this.sheet.getRange(i, 2).getValue() == "")
+      if(this.sheet.getRange(i, 2).getValue() == "")
       {
         this.sheet.getRange(i, 1).setValue(key);
         this.sheet.getRange(i, 2).setValue(value);
         return;
       }
+  }
+}
+
+//used for overriding previous entries, writes based on count
+DataMap.prototype.set3 = function(key, value) {
+  var v = parseInt(this.sheet.getRange(1, 2).getValue());
+  //the key is not existent so add to a new row
+  for(i = v + 1; i < this.sheet.getMaxRows(); i++){
+        this.sheet.getRange(i, 1).setValue(key);
+        this.sheet.getRange(i, 2).setValue(value);
+        return;
   }
 }
 
