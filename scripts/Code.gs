@@ -50,20 +50,15 @@ if (responseApi.getResponseCode() == 200) {
       for (i = 0; i < tweets.length; i++) {
         var date = new Date(tweets[i].created_at);
         var temp = "[" + date.toUTCString() + "]" + tweets[i].text + " / ";
-        dataMap.set3(count + i, temp.toLowerCase());
+        dataMap.set3(count + i, temp.toLowerCase(), count + i);
+      }
+      if (count + i > 5000) { //reset once count reaches 5000 
+        dataMap.set('count', 1);
+      } else {
         dataMap.set('count', count + i);
       }
     }
   }
-}
-
-//resets live data counter every 4 hours
-function reset() {
-    var dataMap = new DataMap(1);
-    var count = dataMap.get('count');
-    if (count > 4000) {
-      dataMap.set('count', 1);
-    }
 }
 
 
@@ -118,7 +113,7 @@ if (responseApi.getResponseCode() == 200) {
       for (var i = 0; i < tweets.length; i++) {
         var date = new Date(tweets[i].created_at);
         var temp = "[" + date.toUTCString() + "]" + tweets[i].text + " / ";
-        dataMap.set2(count + i, temp.toLowerCase());
+        dataMap.set2(count + i, temp.toLowerCase(), count + i);
       }
     }
   }
