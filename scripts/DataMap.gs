@@ -68,8 +68,7 @@ DataMap.prototype.set = function(key, value) {
 }
 
 //set a value with its key, value. Start parsing based on count
-DataMap.prototype.set2 = function(key, value, v) {
-  //Logger.log(v);
+DataMap.prototype.setNew = function(key, value, v) {
   //the key is not existent so add to a new row
   for(i = v; i < this.sheet.getMaxRows(); i++){
       if(this.sheet.getRange(i, 2).getValue() == "")
@@ -82,7 +81,7 @@ DataMap.prototype.set2 = function(key, value, v) {
 }
 
 //used for overriding previous entries, writes based on count
-DataMap.prototype.set3 = function(key, value, v) {
+DataMap.prototype.setReplace = function(key, value, v) {
   //the key is not existent so add to a new row
   for(i = v + 1; i < this.sheet.getMaxRows(); i++){
         this.sheet.getRange(i, 1).setValue(key);

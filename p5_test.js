@@ -6,7 +6,7 @@ let text;
 let flip = true; 
 let z;
 
-let url = "https://sheets.googleapis.com/v4/spreadsheets/1tjvDbvUsSogN2CK5RrXXntTHlWSRl-1T4UiUJJLw5gA/values/Sheet1!";
+let url = "https://sheets.googleapis.com/v4/spreadsheets/1tjvDbvUsSogN2CK5RrXXntTHlWSRl-1T4UiUJJLw5gA/values/Sheet2!";
 let r_max = 10; //HOW MANY TWEETS TO FETCH, 5000 seems to be the max
 let range = "B2:B" + r_max;
 let key = "?key=AIzaSyCEQ1fTLIunpWw7aMdFXgfyQ6lvkN4kiZc";
@@ -82,7 +82,6 @@ function draw(){
     sphere(random(10,30));
     pop();
   }
-
 }
 
 //plane(window.innerWidth - 4, window.innerHeight - 4);
