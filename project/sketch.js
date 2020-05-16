@@ -1,8 +1,24 @@
+/**
+ * 
+ * The p5.EasyCam library - Easy 3D CameraControl for p5.js and WEBGL.
+ *
+ *   Copyright 2018-2019 by p5.EasyCam authors
+ *
+ *   Source: https://github.com/freshfork/p5.EasyCam
+ *
+ *   MIT License: https://opensource.org/licenses/MIT
+ * 
+ * 
+ * explanatory notes:
+ * 
+ * p5.EasyCam is a derivative of the original PeasyCam Library by Jonathan Feinberg 
+ * and combines new useful features with the great look and feel of its parent.
+ * 
+ * 
+ */
+ 
 let resp;
 let x = 0;
-let h = 1000;
-let w = 1000;
-let text;
 let flip = true; 
 let dataMap;
 
@@ -11,43 +27,72 @@ let r_max = 100; //how many datapoints to fetch
 let range = "A2:C13";// + r_max;
 let key = "?key=AIzaSyCEQ1fTLIunpWw7aMdFXgfyQ6lvkN4kiZc";
 let sheets = url + range + key;
-let emotion = [0, 0, 0, 0];
+var easycam;
 
 function setup() { 
+
   pixelDensity(1);
+
   var canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   setAttributes('antialias', true);
+  
+  // define initial state
   var state = {
-    distance : 200
+    distance : 200,
+    // rotation : Dw.Rotation.create({angles_xyz:[0, 0, 0]}),
   };
-  tex = createGraphics(windowWidth, windowHeight);
+  
   httpGet(sheets, 'jsonp', false, function(response) {
     resp = response;
   });
+
+  easycam = new Dw.EasyCam(this._renderer, state);
+  
+  // slower transitions look nicer in the ortho mode
+  easycam.setDefaultInterpolationTime(2000); //slower transition
+  // start with an animated rotation
+  easycam.setRotation(Dw.Rotation.create({angles_xyz:[PI/2, PI/2, PI/2]}), 2500);
+  easycam.setDistance(400, 2500);
+
 } 
+
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  easycam.setViewport([0,0,windowWidth, windowHeight]);
 }
 
-//begin actually drawing
+
 function draw(){
+  
   if (!resp) {
     return; //wait for http response
   }
-  //convert json response to dict a single time time
   if (flip) {
     dataMap = convert(resp.values); 
     flip = false;
-   }
-  camera(30, 60, -20 + sin(frameCount * 0.003) * 400, 90, 180, -60, frameCount, 1, -frameCount);
-  plane(200, 200);
-  background(125);
-  ambientLight(100);
+  }
+
+  var cam_dist = easycam.getDistance();
+  var oscale = cam_dist * 0.001;
+  var ox = width  / 2 * oscale;
+  var oy = height / 2 * oscale;
+  ortho(-ox, +ox, -oy, +oy, -10000, 10000);
+  easycam.setPanScale(0.004 / sqrt(cam_dist));
+  
+	background(255);
+  noStroke();
+  
+  ambientLight(200);
   pointLight(255, 255, 255, 0, 0, 0);
+  
+  // objects
+  noStroke();
+  randomSeed(2);
   noStroke();
   randomSeed(69);
-  
+  background(0);
+
   for(var i = 0; i < 40; i++){
     var m = 250;
     var tx = random(-m, m);
@@ -69,7 +114,6 @@ function draw(){
   }
 }
 
-//plane(window.innerWidth - 4, window.innerHeight - 4);
 //get tweets from google sheet and return dict of relevant strings
 function convert(vals){
   let dict = {};
@@ -82,3 +126,31 @@ function convert(vals){
   print(dict);
   return dict;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
