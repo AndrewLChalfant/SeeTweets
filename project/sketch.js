@@ -18,18 +18,25 @@
  */
  
 let resp;
-let x = 0;
+var x = 0;
 let flip = true; 
 let dataMap;
 
 let url = "https://sheets.googleapis.com/v4/spreadsheets/1tjvDbvUsSogN2CK5RrXXntTHlWSRl-1T4UiUJJLw5gA/values/Sheet4!";
-let r_max = 100; //how many datapoints to fetch
+var r_max = 100; //how many datapoints to fetch
 let range = "A2:C13";// + r_max;
 let key = "?key=AIzaSyCEQ1fTLIunpWw7aMdFXgfyQ6lvkN4kiZc";
 let sheets = url + range + key;
 var easycam;
 
+let params = {
+    radius: 200,
+    radiusMin: 50,
+    radiusMax: 2000
+};
+
 function setup() { 
+
 
   pixelDensity(1);
 
@@ -54,6 +61,8 @@ function setup() {
   easycam.setRotation(Dw.Rotation.create({angles_xyz:[PI/2, PI/2, PI/2]}), 2500);
   easycam.setDistance(400, 2500);
 
+  gui = createGui();
+  gui.addObject(params);
 } 
 
 
@@ -108,7 +117,7 @@ function draw(){
     //iterate over every day and scale sphere based on positivity data
     for (var key in dataMap) {
       var positive = dataMap[key]
-      sphere(random(positive - 0.3) * 200);
+      sphere(random(positive - 0.3) * params.radius);
     }
     pop();
   }
@@ -127,30 +136,13 @@ function convert(vals){
   return dict;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// check for keyboard events
+function keyPressed() {
+  switch(key) {
+    // type [F1] to hide / show the GUI
+    case 'a':
+      visible = !visible;
+      if(visible) gui.show(); else gui.hide();
+      break;
+  }
+}
