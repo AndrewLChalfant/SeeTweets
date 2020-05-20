@@ -6,7 +6,7 @@ let dataMap;
 
 let url = "https://sheets.googleapis.com/v4/spreadsheets/1tjvDbvUsSogN2CK5RrXXntTHlWSRl-1T4UiUJJLw5gA/values/Sheet4!";
 var r_max = 100; //how many datapoints to fetch
-let range = "A2:C13";// + r_max;
+let range = "A2:C16";// + r_max;
 let key = "?key=AIzaSyCEQ1fTLIunpWw7aMdFXgfyQ6lvkN4kiZc";
 let sheets = url + range + key;
 
@@ -23,6 +23,9 @@ let params = {
     seed: 15,
     seedMin: 0,
     seedMax: 100,
+    volume: 1,
+    volumeMin: 0,
+    volumeMax: 1,
 };
 
 function preload() {
@@ -71,7 +74,7 @@ function windowResized() {
 
 
 function draw(){
-  
+  song.setVolume(params.volume);
   if (!resp) {
     return; //wait for http response
   }
