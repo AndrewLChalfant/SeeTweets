@@ -103,7 +103,7 @@ function draw(){
   randomSeed(params.seed);
   background(0);
 
-  for(var i = 0; i < 60; i++){
+  for(var i = 0; i < 40; i++){
 
     //iterate over every day and scale sphere based on positivity data
     for (var key in dataMap) {
