@@ -23,9 +23,9 @@ let params = {
     seed: 15,
     seedMin: 0,
     seedMax: 100,
-    volume: 10.0,
+    volume: 1,
     volumeMin: 0,
-    volumeMax: 10.0,
+    volumeMax: 1,
 };
 
 function preload() {
@@ -74,7 +74,7 @@ function windowResized() {
 
 
 function draw(){
-  song.setVolume(params.volume/10);
+  song.setVolume(params.volume);
   if (!resp) {
     return; //wait for http response
   }
