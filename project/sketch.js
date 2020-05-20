@@ -40,7 +40,7 @@ let params = {
 };
 
 function setup() { 
-  tex = loadImage('../GreenTexture.jpg') 
+  tex = loadImage('GreenTexture.jpg') 
   pixelDensity(1);
 
   var canvas = createCanvas(windowWidth, windowHeight, WEBGL);
@@ -156,4 +156,8 @@ function keyPressed() {
       if(visible) gui.show(); else gui.hide();
       break;
   }
+}
+
+function canvasPressed(){
+  //mySound.play();
 }
