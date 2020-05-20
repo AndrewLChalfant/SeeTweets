@@ -9,8 +9,11 @@ var r_max = 100; //how many datapoints to fetch
 let range = "A2:C13";// + r_max;
 let key = "?key=AIzaSyCEQ1fTLIunpWw7aMdFXgfyQ6lvkN4kiZc";
 let sheets = url + range + key;
+
 let tex_white;
 let tex_red;
+let song;
+
 var easycam;
 
 let params = {
@@ -23,13 +26,18 @@ let params = {
 };
 
 function preload() {
-    tex_white = loadImage('WhiteTexture.jpg') 
-    tex_red = loadImage('RedTexture.png') 
+    tex_white = loadImage('WhiteTexture.jpg'); 
+    tex_red = loadImage('RedTexture.png');
+    song = loadSound('Suspense.mp3', loaded);
+}
+
+function loaded() {
+  console.log('Song loaded');
 }
 
 function setup() { 
   pixelDensity(1);
-
+  song.play();
   var canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   setAttributes('antialias', true);
   
@@ -148,4 +156,16 @@ function keyPressed() {
 
 function canvasPressed(){
   //mySound.play();
+}
+
+
+function togglePlaying() {
+  if (!song.isPlaying()) {
+    song.play();
+    song.setVolume(0.3);
+    button.html('pause');
+  } else {
+    song.stop();
+    button.html('play');
+  }
 }
