@@ -157,7 +157,8 @@ function keyPressed() {
   }
 }
 
-function canvasPressed(){
+
+function mousePressed(){
   song.play();
   song.loop();
 }
