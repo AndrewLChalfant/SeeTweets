@@ -17,14 +17,14 @@ let params = {
     scale: 1,
     scaleMin: 0,
     scaleMax: 10,
-    seed: 0,
+    seed: 15,
     seedMin: 0,
     seedMax: 100,
 };
 
 function preload() {
     tex_white = loadImage('WhiteTexture.jpg') 
-    tex_red = loadImage('RedTexture.jpg') 
+    tex_red = loadImage('RedTexture.png') 
 }
 
 function setup() { 
