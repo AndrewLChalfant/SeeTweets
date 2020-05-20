@@ -23,9 +23,9 @@ let params = {
     seed: 15,
     seedMin: 0,
     seedMax: 100,
-    volume: 10,
+    volume: 10.0,
     volumeMin: 0,
-    volumeMax: 10,
+    volumeMax: 10.0,
 };
 
 function preload() {
