@@ -39,6 +39,8 @@ function loaded() {
 }
 
 function setup() { 
+  song.play();
+  song.loop();
   pixelDensity(1);
 
   var canvas = createCanvas(windowWidth, windowHeight, WEBGL);
