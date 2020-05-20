@@ -1,21 +1,3 @@
-/**
- * 
- * The p5.EasyCam library - Easy 3D CameraControl for p5.js and WEBGL.
- *
- *   Copyright 2018-2019 by p5.EasyCam authors
- *
- *   Source: https://github.com/freshfork/p5.EasyCam
- *
- *   MIT License: https://opensource.org/licenses/MIT
- * 
- * 
- * explanatory notes:
- * 
- * p5.EasyCam is a derivative of the original PeasyCam Library by Jonathan Feinberg 
- * and combines new useful features with the great look and feel of its parent.
- * 
- * 
- */
 p5.disableFriendlyErrors = true;
 let resp;
 var x = 0;
@@ -27,7 +9,8 @@ var r_max = 100; //how many datapoints to fetch
 let range = "A2:C13";// + r_max;
 let key = "?key=AIzaSyCEQ1fTLIunpWw7aMdFXgfyQ6lvkN4kiZc";
 let sheets = url + range + key;
-let tex;
+let tex_white;
+let tex_red;
 var easycam;
 
 let params = {
@@ -40,7 +23,8 @@ let params = {
 };
 
 function preload() {
-    tex = loadImage('GreenTexture.jpg') 
+    tex_white = loadImage('WhiteTexture.jpg') 
+    tex_red = loadImage('RedTexture.jpg') 
 }
 
 function setup() { 
@@ -125,12 +109,13 @@ function draw(){
       var scale = Math.pow(1.0 / positive, 7) / 20;
       if (positive > 0.29) {
         r = random(0, 5) + scale;
+        texture(tex_red);
       } else {
         r = random(0, 5) + scale;
         g = random(0, 5) + scale;
         b = random(0, 5) + scale;
+        texture(texure_white)
       }
-      texture(tex);
       //ambientMaterial(r,g,b);
       sphere(random(0, 5) + Math.pow(scale/100,2) * params.scale);
     }
