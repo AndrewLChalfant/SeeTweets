@@ -114,7 +114,7 @@ function draw(){
         r = random(0, 5) + scale;
         g = random(0, 5) + scale;
         b = random(0, 5) + scale;
-        texture(texure_white)
+        texture(tex_white)
       }
       //ambientMaterial(r,g,b);
       sphere(random(0, 5) + Math.pow(scale/100,2) * params.scale);
