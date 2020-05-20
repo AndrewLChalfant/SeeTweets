@@ -27,6 +27,7 @@ var r_max = 100; //how many datapoints to fetch
 let range = "A2:C13";// + r_max;
 let key = "?key=AIzaSyCEQ1fTLIunpWw7aMdFXgfyQ6lvkN4kiZc";
 let sheets = url + range + key;
+let tex;
 var easycam;
 
 let params = {
@@ -39,8 +40,7 @@ let params = {
 };
 
 function setup() { 
-
-
+  tex = loadImage('../GreenTexture.jpg') 
   pixelDensity(1);
 
   var canvas = createCanvas(windowWidth, windowHeight, WEBGL);
@@ -123,8 +123,11 @@ function draw(){
       if (positive > 0.29) {
         r = random(0, 5) + scale;
       } else {
+        r = random(0, 5) + scale;
         g = random(0, 5) + scale;
+        b = random(0, 5) + scale;
       }
+      texture(tex);
       ambientMaterial(r,g,b);
       sphere(random(0, 5) + Math.pow(scale/100,2) * params.scale);
     }
