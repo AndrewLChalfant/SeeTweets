@@ -131,7 +131,7 @@ function draw(){
         b = random(0, 5) + scale;
       }
       texture(tex);
-      ambientMaterial(r,g,b);
+      //ambientMaterial(r,g,b);
       sphere(random(0, 5) + Math.pow(scale/100,2) * params.scale);
     }
   }
