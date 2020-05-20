@@ -40,8 +40,7 @@ function loaded() {
 
 function setup() { 
   pixelDensity(1);
-  song.play();
-  song.loop();
+
   var canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   setAttributes('antialias', true);
   
@@ -94,7 +93,7 @@ function draw(){
 	background(255);
   noStroke();
 
-  ambientLight(100);
+  ambientLight(200);
   pointLight(255, 255, 255, 0, 0, 0);
 
   // objects
@@ -159,7 +158,8 @@ function keyPressed() {
 }
 
 function canvasPressed(){
-  //mySound.play();
+  song.play();
+  song.loop();
 }
 
 
