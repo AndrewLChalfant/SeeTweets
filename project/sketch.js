@@ -39,8 +39,11 @@ let params = {
     seedMax: 100,
 };
 
+function preload() {
+    tex = loadImage('GreenTexture.jpg') 
+}
+
 function setup() { 
-  tex = loadImage('GreenTexture.jpg') 
   pixelDensity(1);
 
   var canvas = createCanvas(windowWidth, windowHeight, WEBGL);
