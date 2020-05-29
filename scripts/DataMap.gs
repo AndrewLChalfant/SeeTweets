@@ -81,12 +81,13 @@ DataMap.prototype.setNew = function(key, value, v) {
 }
 
 //used for overriding previous entries, writes based on count
-DataMap.prototype.setReplace = function(key, value, v) {
+DataMap.prototype.setReplace = function(key, value, score) {
   //the key is not existent so add to a new row
-  for(i = v + 1; i < this.sheet.getMaxRows(); i++){
-        this.sheet.getRange(i, 1).setValue(key);
-        this.sheet.getRange(i, 2).setValue(value);
-        return;
+  for(var i = key + 1; i < this.sheet.getMaxRows(); i++){
+    this.sheet.getRange(i, 1).setValue(key);
+    this.sheet.getRange(i, 2).setValue(value);
+    this.sheet.getRange(i, 3).setValue(score);
+    return;
   }
 }
 

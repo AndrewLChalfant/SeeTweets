@@ -23,7 +23,7 @@ function authenticate() {
   var token = parsedToken.access_token;
 
   // Authenticate Twitter API requests with the bearer token
-  var apiUrl = "https://api.twitter.com/1.1/search/tweets.json?q=feel&count=100&lang=en&result_type=recent";
+  var apiUrl = "https://api.twitter.com/1.1/search/tweets.json?q=feel&count=100&lang=en&result_type=recent&tweet_mode=extended";
   var apiOptions = {
     headers : {
       Authorization: 'Bearer ' + token
@@ -56,14 +56,21 @@ function live() {
     // Parse the JSON encoded Twitter API response
     var tweets = JSON.parse(responseApi.getContentText()).statuses;
     var i = 0;
+    var rt_count = 0;
     
     if (tweets) {
       for (i = 0; i < tweets.length; i++) {
-        var date = new Date(tweets[i].created_at);
-        var temp = "[" + date.toUTCString() + "]" + tweets[i].text + " / ";
-        dataMap.setReplace(count + i, temp.toLowerCase(), count + i);
+        if (tweets[i].full_text.includes("RT @")) {
+            rt_count++;
+        } else {
+          var date = new Date(tweets[i].created_at);
+          var temp = "[" + date.toUTCString() + "]" + tweets[i].full_text;
+          var tweet_score = ((scores(tweets[i].full_text) / parseFloat(tweets[i].full_text.length)) * 100).toFixed(3);
+          dataMap.setReplace(count + i - rt_count, temp.toLowerCase(), tweet_score);
+        }
       }
       
+      i = i - rt_count;
       if (count + i > 5000) { //reset once count reaches 5000 
         dataMap.set('count', 1);
       } else {
@@ -71,6 +78,18 @@ function live() {
       }
     }
   }
+}
+
+function scores(text) {
+  let lower = text.toLowerCase();
+  let alphaOnly = lower.replace(/[^a-zA-Z\s]+/g, '');
+  let split = alphaOnly.split(" ");
+  let counter = 0;
+  
+  for (var i = 0; i < split.length; i++) {
+    counter += score_text(split[i]);
+  }
+  return counter;
 }
 
 //updates a spreadsheet storing ALL recent tweets
