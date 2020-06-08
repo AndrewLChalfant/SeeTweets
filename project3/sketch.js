@@ -7,6 +7,7 @@ let flip = true;
 let timer = 0;
 let timer2 = 0;
 let dataMap;
+let button;
 
 let url = "https://sheets.googleapis.com/v4/spreadsheets/176z44O-mgCBX20skzYfsT7Kx1yibE4jguVcvXEHpn3M/values/";
 let sheet_name = "live" + "!";
@@ -31,7 +32,7 @@ function setup() {
   var state = {
     distance : 200,
   };
-  
+
   update_call();
 } 
 
@@ -43,7 +44,6 @@ function windowResized() {
 
 function draw(){
   let c = color(h, s, b);
-
   background(c);
   if (!resp || !resp2) {
     textSize(100);
@@ -74,12 +74,13 @@ function draw(){
   
   textSize(10);
   fill(255);
+  text("Displaying happy live tweets", windowWidth/50, 20, 400, 200);
   text("Andrew Chalfant 2020", windowWidth/50, windowHeight - 25, 400, 200);
   
   textSize(20);
   if (dataMap) {
     fill(255);
-    text(dataMap[index][0], windowWidth/3, windowHeight/2 - 100, 400, 200);
+    text(dataMap[index][0], windowWidth/2 - 200, windowHeight/2 - 100, 400, 200);
     stroke(255);
     fill(0, 0, 0, 0);
     //ellipse(windowWidth/2, windowHeight/2 - 85, dataMap[index][1] * 50, dataMap[index][1] * 50);
@@ -96,10 +97,10 @@ function convert(vals){
     var str = resp2.values[i][0];
     var score = vals[i][0];
     var tweet = str.split("]")[1]; //store username and if rt
-    tweet = tweet.replace("&amp;", "&");
+    tweet = tweet.replace("&amp;", "and");
     //var temp = tweet.split(" ");
     //tweet = tweet.split(": ")[1];
-    if (parseInt(score) > 3 || parseInt(score) < -3) {
+    if (parseInt(score) > 3 && !tweet.includes("birthday") && !tweet.includes("bday")) {
       arr.push([tweet, parseInt(score)]);
     }
   }
