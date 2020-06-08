@@ -6,11 +6,29 @@ Minqing Hu and Bing Liu. "Mining and Summarizing Customer Reviews."
 
 
 https://github.com/darenr/afinn/blob/master/afinn_en.js
+https://github.com/thisandagain/sentiment/blob/develop/build/Emoji_Sentiment_Data_v1.0.csv
 */
 
 function score_text(text) {
  var lookup = {
-   "😢": -100,
+   "😢": -2,
+   "😂": 2,
+   "❤": 4,
+   "❤️": 4,
+   "😍":4,
+   "😭": -2,
+   "😘": 4,
+   "😊": 4,
+   "👌": 3,
+   "👏": 3,
+   "🔥": 2,
+   "😐": -2,
+   "🥺": -3,
+   "💔": -4,
+   "🤣": 3,
+   "✨": 4,
+   ":)": 2,
+   ":(":-2,
   "abandon": -2,
   "abandoned": -2,
   "abandons": -2,

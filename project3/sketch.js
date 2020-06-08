@@ -74,10 +74,10 @@ function draw(){
   
   textSize(10);
   fill(255);
-  text("Displaying happy live tweets", windowWidth/50, 20, 400, 200);
+  text("Displaying happy live tweets - anonymously from around the world", windowWidth/50, 20, 400, 200);
   text("Andrew Chalfant 2020", windowWidth/50, windowHeight - 25, 400, 200);
   
-  textSize(20);
+  textSize(25);
   if (dataMap) {
     fill(255);
     text(dataMap[index][0], windowWidth/2 - 200, windowHeight/2 - 100, 400, 200);
@@ -97,10 +97,10 @@ function convert(vals){
     var str = resp2.values[i][0];
     var score = vals[i][0];
     var tweet = str.split("]")[1]; //store username and if rt
-    tweet = tweet.replace("&amp;", "and");
+    tweet = tweet.replace("&", "and");
     //var temp = tweet.split(" ");
     //tweet = tweet.split(": ")[1];
-    if (parseInt(score) > 3 && !tweet.includes("birthday") && !tweet.includes("bday")) {
+    if (parseInt(score) > 2 && !tweet.includes("birthday") && !tweet.includes("bday")) {
       arr.push([tweet, parseInt(score)]);
     }
   }
