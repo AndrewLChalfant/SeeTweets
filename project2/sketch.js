@@ -5,11 +5,11 @@ let flip = true;
 let timer = 0;
 let dataMap;
 
-let url = "https://sheets.googleapis.com/v4/spreadsheets/1tjvDbvUsSogN2CK5RrXXntTHlWSRl-1T4UiUJJLw5gA/values/";
-let sheet_name = "live_tweets" + "!";
+let url = "https://sheets.googleapis.com/v4/spreadsheets/176z44O-mgCBX20skzYfsT7Kx1yibE4jguVcvXEHpn3M/values/";
+let sheet_name = "live" + "!";
 var r_max = 5000; //how many datapoints to fetch
 let range = "C2:C" + r_max;
-let key = "?key=AIzaSyCEQ1fTLIunpWw7aMdFXgfyQ6lvkN4kiZc";
+let key = "?key=AIzaSyC0A1JV1C3_JGvLh-3hKC3klIcNXCxUdYY";
 let sheets = url + sheet_name + range + key;
 
 
@@ -17,9 +17,9 @@ let song;
 let plot;
 
 let params = {
-    scale: 15,
-    scaleMin: 10,
-    scaleMax: 20,
+    scale: 5.0,
+    scaleMin: 0,
+    scaleMax: 10.0,
 };
 let dict = new Map();
 
@@ -53,8 +53,9 @@ function windowResized() {
 
 
 function draw(){
-  background(0);
+  background(50);
   if (!resp) {
+    textSize(100);
     text("Loading", windowWidth/10, windowHeight/2 - 100);
     return; //wait for http response
   }
@@ -71,28 +72,21 @@ function draw(){
     dataMap = convert(resp.values);
     timer = millis();
   }
-
-    plot.setPos(0, 0);
-    plot.setOuterDim(500, 500);
-
-    // Add the points
-    plot.setPoints(dataMap);
-
-    // Set the plot title and the axis labels
-    plot.setTitleText("A very simple example");
-    plot.getXAxis().setAxisLabelText("x axis");
-    plot.getYAxis().setAxisLabelText("y axis"); 
-    //plot.setLogScale("y");
-    plot.activatePanning();
-    // Draw it!
-    draw_plot(this);
-    plot.setPointColor(this.color(50, 50, 255, 20));
+  
+  stroke(255, 128, 128);
+  for (let  i=0; i < dataMap.length; i++) {
+    if (dataMap[i] > 0) {
+      stroke(128, 128, 255);
+    } else {
+      stroke(255, 128, 128);
+    }
+    ellipse(windowWidth/20 + i/5 * windowWidth/800, windowHeight/2 + 8 * dataMap[i], 1 + params.scale/5.0);
+  }
   //textSize(params.scale);
   //text(dataMap[0], windowWidth/10, windowHeight/2 - 100);
   //text(dataMap[2000], windowWidth/10, windowHeight/2);
   //text(dataMap[3500], windowWidth/10, windowHeight/2 + 100);
   fill(255, 255, 255);
-  noStroke();
 }
 
 //get tweets from google sheet and return dict of relevant strings
@@ -103,7 +97,9 @@ function convert(vals){
     //var tweet = str.split("]")[1]; //store username and if rt
     //var temp = tweet.split(" ");
     //tweet = tweet.split(": ")[1];
-    arr[i]= new GPoint(i, str);
+    if (str != 0) {
+      arr.push(str)
+    }
   }
 
   print(arr);
