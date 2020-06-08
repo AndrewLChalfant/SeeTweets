@@ -5,8 +5,8 @@ let resp2;
 var x = 0;
 let flip = true; 
 let fade = 0;
-let fade_rate = 5;
-let fade_cap = 1050;
+let fade_rate = 10;
+let fade_cap = 2200;
 let timer = 0;
 let timer2 = 0;
 let dataMap;
@@ -78,7 +78,7 @@ function draw(){
 
   print(fade);
   if (flip_switch && fade < fade_cap) {
-    fade += 5;
+    fade += 10;
   }
   if (fade >= fade_cap) {
     flip_switch = false;
@@ -106,8 +106,7 @@ function convert(vals){
     var score = vals[i][0];
     var tweet = str.split("]")[1]; //store username and if rt
     var location = str.split("]")[0];
-    tweet = tweet.replace(/&amp;/g, "");
-    tweet = "\"" + tweet.replace(/&lt;/g, "<") + "\"";
+    tweet = "\"" + tweet + "\"";
 
     if (parseInt(score) > 2 && !tweet.includes("birthday") && !tweet.includes("bday")) {
       arr.push([tweet, parseInt(score), location]);
@@ -155,15 +154,15 @@ function draw_text() {
     fill(0, 0, 255, fade);
     text(dataMap[index][0], windowWidth/2 - 300, windowHeight/2 - 125, 600, 300);
     textSize(15);
-
+    
+    textAlign(LEFT);
     var location = "unknown";
     if (dataMap[index][2]) {
       location = dataMap[index][2];
+      text("from: " + location, windowWidth/2 - 320, windowHeight/2 + 115, 600, 300);
     }
 
-    textAlign(LEFT);
     //fill(0, 0, 255, 255);
-    text("from: " + location, windowWidth/2 - 320, windowHeight/2 + 115, 600, 300);
 
     stroke(255);
     fill(0, 0, 0, 0);
