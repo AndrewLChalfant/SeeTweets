@@ -6,11 +6,12 @@ var x = 0;
 let flip = true; 
 let fade = 0;
 let fade_rate = 10;
-let fade_cap = 2200;
+let fade_cap = 2300;
 let timer = 0;
 let timer2 = 0;
 let dataMap;
 let flip_switch = true;
+var button;
 
 let url = "https://sheets.googleapis.com/v4/spreadsheets/176z44O-mgCBX20skzYfsT7Kx1yibE4jguVcvXEHpn3M/values/";
 let sheet_name = "live" + "!";
@@ -24,11 +25,15 @@ let sheets_words = url + sheet_name + range2 + key;
 let index = 0;
 
 let fontReglar;
+let div;
+let lastTweet = "";
 
 //default backgrond color
 let h = 25;
 let s = 175;
 let b = 225;
+let c;
+
 function preload() {
   fontRegular =loadFont('Song.ttf');
 }
@@ -41,17 +46,21 @@ function setup() {
   setAttributes('antialias', true);
   update_call();
   textFont(fontRegular);
+  
+
 } 
 
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  button.position(windowWidth - 500, windowHeight - 200);
 }
 
 
 function draw(){
-  let c = color(h, s, b);
+  c = color(h, s, b);
   background(c);
+  draw_back_text();
 
   if (!resp || !resp2) {
     textSize(100);
@@ -66,7 +75,7 @@ function draw(){
     flip = false;
   }
 
-  if (millis() >= 8000 + timer2 ) { //update once per 8 secs + Math.random()
+  if (millis() >= 8000 + timer2 + Math.random()) { //update once per 8 secs 
     index += 1;
     fade = 0;
     flip_switch = true;
@@ -76,7 +85,7 @@ function draw(){
     }
   }
 
-  print(fade);
+  //print(fade);
   if (flip_switch && fade < fade_cap) {
     fade += 10;
   }
@@ -94,7 +103,7 @@ function draw(){
     timer = millis();
     return;
   }
-  
+
   draw_text();
 }
 
@@ -126,43 +135,70 @@ function update_call() {
   });
 }
 
-function draw_text() {
-  textSize(10);
+function mousePressed() {
+  if (mouseX > windowWidth/2 + 165 && mouseY > windowHeight/2 + 114) {
+    if (mouseX < windowWidth/2 + 465 && mouseY < windowHeight/2 + 130) {
+      let message = "I liked a tweet " + lastTweet + "from https://go.umd.edu/seetweets"; // %23SeeTweet";
+      window.open('https://twitter.com/intent/tweet/?text=' + message + '&amp;url=" target="_blank"');
+    }
+  }
+}
+
+//draw supporting graphics
+function draw_back_text() {
+  textSize(20);
   fill(255);
-
   textFont('Helvetica');
-  text("Displaying happy live tweets - anonymously from around the world", windowWidth/50, 20, 400, 300);
-  text("Andrew Chalfant 2020", windowWidth/50, windowHeight - 25, 400, 200);
-  //textFont(fontRegular);
+  text("Displaying live tweets - anonymously from around the world", windowWidth/50, 20, 1000, 300);
 
+  textSize(15);
+  text("Andrew Chalfant 2020", windowWidth/50, windowHeight - 25, 400, 200);
+
+  textSize(15);
+
+
+  fill(0, 0, 255, 0);
+  stroke(0, 0, 255, 100);
+  rect(windowWidth/2 - 320, windowHeight/2 - 200, 620, 300, 20);
+
+  noStroke();
+  fill(255);
+  rect(windowWidth/2 + 150, windowHeight/2 + 110, 150, 20, 5);
+  //textFont(fontRegular);
+  fill(c);
+  text("Share on Twitter", windowWidth/2 + 165, windowHeight/2 + 114, 600, 300);
+}
+
+//draw main tweet text
+function draw_text() {
   if (dataMap[index]) {
     tweet = dataMap[index][0];
-    if (tweet.length > 150) {
+    lastTweet = tweet;
+    if (tweet.length > 180) {
+      textSize(22); 
+    } else if (tweet.length > 130) {
       textSize(25);
       //fade_rate = 2;
+    } else if (tweet.length < 30) {
+      textSize(50);
     } else {
       textSize(35);
       //fade_rate = 2;
     }
     
-    stroke(0, 0, 255, 100);
     textAlign(CENTER);
-    fill(0, 0, 255, 0);
-    rect(windowWidth/2 - 320, windowHeight/2 - 200, 620, 300, 20);
-    
     noStroke();
     fill(0, 0, 255, fade);
     text(dataMap[index][0], windowWidth/2 - 300, windowHeight/2 - 125, 600, 300);
+   
     textSize(15);
-    
     textAlign(LEFT);
+
     var location = "unknown";
     if (dataMap[index][2]) {
       location = dataMap[index][2];
       text("from: " + location, windowWidth/2 - 320, windowHeight/2 + 115, 600, 300);
     }
-
-    //fill(0, 0, 255, 255);
 
     stroke(255);
     fill(0, 0, 0, 0);
