@@ -154,9 +154,6 @@ function draw_back_text() {
   textSize(15);
   text("Andrew Chalfant 2020", windowWidth/50, windowHeight - 25, 400, 200);
 
-  textSize(15);
-
-
   fill(0, 0, 255, 0);
   stroke(0, 0, 255, 100);
   rect(windowWidth/2 - 320, windowHeight/2 - 200, 620, 300, 20);
@@ -165,8 +162,10 @@ function draw_back_text() {
   fill(255);
   rect(windowWidth/2 + 150, windowHeight/2 + 110, 150, 20, 5);
   //textFont(fontRegular);
+
+  textSize(10);
   fill(c);
-  text("Share on Twitter", windowWidth/2 + 165, windowHeight/2 + 114, 600, 300);
+  text("Share on Twitter", windowWidth/2 + 185, windowHeight/2 + 116, 600, 300);
 }
 
 //draw main tweet text
