@@ -1,5 +1,5 @@
 //handles twitter api authentication
-function authenticate() {
+function authenticate(val) {
   var TWITTER_CONSUMER_KEY = '';
   var TWITTER_CONSUMER_SECRET = '';
   
@@ -21,9 +21,15 @@ function authenticate() {
   var responseToken = UrlFetchApp.fetch(tokenUrl, tokenOptions);
   var parsedToken = JSON.parse(responseToken);
   var token = parsedToken.access_token;
+  var queryWord = "happy";
 
   // Authenticate Twitter API requests with the bearer token
-  var apiUrl = "https://api.twitter.com/1.1/search/tweets.json?q=feel&count=100&lang=en&result_type=recent&tweet_mode=extended";
+  var apiUrl = "";
+  if (val == 0) {
+    apiUrl = "https://api.twitter.com/1.1/search/tweets.json?q=" + queryWord + "&count=100&lang=en&result_type=recent&tweet_mode=extended";
+  } else {
+    apiUrl = "https://api.twitter.com/1.1/search/tweets.json?q=feel&count=100&lang=en&result_type=recent&tweet_mode=extended";
+  }
   var apiOptions = {
     headers : {
       Authorization: 'Bearer ' + token
@@ -48,9 +54,10 @@ function getCount(dataMap) {
 
 //updates a spreadsheet storing 5000 most recent tweets
 function live() {
+  var tweet_cap = 100;
   var dataMap = new DataMap(1);
   count = getCount(dataMap);
-  responseApi = authenticate()
+  responseApi = authenticate(0)
   
   if (responseApi.getResponseCode() == 200) {
     // Parse the JSON encoded Twitter API response
@@ -60,18 +67,25 @@ function live() {
     
     if (tweets) {
       for (i = 0; i < tweets.length; i++) {
-        if (tweets[i].full_text.includes("RT @")) {
+        var tweet_text = clean_text(tweets[i].full_text);
+        var profanity_check = profanity(tweet_text);
+        
+        if (!profanity_check) { //do not add tweet
+          continue;
+        }
+        if (tweets[i].full_text.includes("RT @")) { //exclude retweets
             rt_count++;
         } else {
+          
           var date = new Date(tweets[i].created_at);
-          var temp = "[" + date.toUTCString() + "]" + tweets[i].full_text;
-          var tweet_score = ((scores(tweets[i].full_text) / parseFloat(tweets[i].full_text.length)) * 100).toFixed(3);
-          dataMap.setReplace(count + i - rt_count, temp.toLowerCase(), tweet_score);
+          var end_str = date.toLocaleString() + " & " + tweets[i].user.location + " & " + tweet_text;
+          var tweet_score = ((scores(tweet_text) / parseFloat(tweet_text.length)) * 100).toFixed(3);
+          dataMap.setReplace(count + i - rt_count, end_str, tweet_score);
         }
       }
       
       i = i - rt_count;
-      if (count + i > 5000) { //reset once count reaches 5000 
+      if (count + i > tweet_cap) { //reset once count reaches 100 
         dataMap.set('count', 1);
       } else {
         dataMap.set('count', count + i);
@@ -80,9 +94,29 @@ function live() {
   }
 }
 
+function clean_text(text) {
+  text = text.toLowerCase();
+  text = text.replace(/\r?\n|\r/g, " "); //get rid of new lines
+  text = text.replace(/&amp;/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">"); //handle &<>
+  
+  let split = text.split(" ");
+  text = "";
+  
+  for (var i = 0; i < split.length; i++) { //remove mentions and links
+    if (!split[i].includes("@") && !split[i].includes("http")) {
+      if (i == split.length - 1) { //remove trailing whitespace
+        text += split[i]; 
+      } else {
+        text += split[i] + " ";
+      }
+    }
+  }
+  return text;
+}
+
 function scores(text) {
   let lower = text.toLowerCase();
-  let alphaOnly = lower.replace(/[^a-zA-Z\s]+/g, '');
+  let alphaOnly = lower.replace(/[.\\_,!?#]+/, ' ');
   let split = alphaOnly.split(" ");
   let counter = 0;
   
@@ -96,7 +130,7 @@ function scores(text) {
 function main() {
   var dataMap = new DataMap(0);
   count = getCount(dataMap);  
-  responseApi = authenticate()
+  responseApi = authenticate(1)
 
   if (responseApi.getResponseCode() == 200) {
     // Parse the JSON encoded Twitter API response

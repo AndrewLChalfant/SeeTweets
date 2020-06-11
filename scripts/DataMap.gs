@@ -6,12 +6,12 @@
 var prev = 0;
 
 function DataMap(live){
-  url='https://docs.google.com/spreadsheets/d/1tjvDbvUsSogN2CK5RrXXntTHlWSRl-1T4UiUJJLw5gA/edit'
+  url='https://docs.google.com/spreadsheets/d/176z44O-mgCBX20skzYfsT7Kx1yibE4jguVcvXEHpn3M/edit'
   this.spreadsheet = SpreadsheetApp.openByUrl(url);
   if (live == 0) {
-    this.sheet = this.spreadsheet.getSheets()[0];
-  } else {
     this.sheet = this.spreadsheet.getSheets()[1];
+  } else {
+    this.sheet = this.spreadsheet.getSheets()[0];
   }
   this.range = this.sheet.getRange(1, 1, this.sheet.getMaxRows(), 2);
   this.values = this.range.getValues();

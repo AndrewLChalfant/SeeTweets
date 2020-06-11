@@ -35,7 +35,7 @@ let b = 225;
 let c;
 
 function preload() {
-  fontRegular =loadFont('Song.ttf');
+  //fontRegular =loadFont('Song.ttf');
 }
 
 function setup() {
@@ -113,11 +113,12 @@ function convert(vals){
   for (let i = 0; i < vals.length; i++) {
     var str = resp2.values[i][0];
     var score = vals[i][0];
-    var tweet = str.split("]")[1]; //store username and if rt
-    var location = str.split("]")[0];
+
+    var tweet = str.split("&")[2]; //store username and if rt
+    var location = str.split("&")[1];
     tweet = "\"" + tweet + "\"";
 
-    if (parseInt(score) > 2 && !tweet.includes("birthday") && !tweet.includes("bday")) {
+    if (parseInt(score) > 2 && !tweet.includes("birthday") && !tweet.includes("bday") && !tweet.includes("b-day")) {
       arr.push([tweet, parseInt(score), location]);
     }
   }
@@ -179,9 +180,9 @@ function draw_text() {
       textSize(25);
       //fade_rate = 2;
     } else if (tweet.length < 30) {
-      textSize(50);
+      textSize(45);
     } else {
-      textSize(35);
+      textSize(33);
       //fade_rate = 2;
     }
     
@@ -194,7 +195,7 @@ function draw_text() {
     textAlign(LEFT);
 
     var location = "unknown";
-    if (dataMap[index][2]) {
+    if (dataMap[index][2] && dataMap[index][2].length < 20) {
       location = dataMap[index][2];
       text("from: " + location, windowWidth/2 - 320, windowHeight/2 + 115, 600, 300);
     }
