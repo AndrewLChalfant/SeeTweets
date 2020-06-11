@@ -45,9 +45,7 @@ function setup() {
   var canvas = createCanvas(windowWidth, windowHeight);
   setAttributes('antialias', true);
   update_call();
-  textFont(fontRegular);
-  
-
+  //textFont(fontRegular);
 } 
 
 
