@@ -51,7 +51,6 @@ function setup() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  button.position(windowWidth - 500, windowHeight - 200);
 }
 
 
