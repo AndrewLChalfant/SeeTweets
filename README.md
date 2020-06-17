@@ -1,5 +1,5 @@
 # SocialMediaSentimentAnalysis
-\Visualization of Twitter user's emotions during the COVID-19 pandemic. 
+SeeTweets is a website that displays anonymous tweets from around the world in realtime.  
 
-100 Tweets are called every 5 minutes by a Google Script and stored in a database. p5.js pulls from the database, scores the emotions of tweet, and updates the site accordingly.
-Live at: https://andrewlchalfant.github.io/SocialMediaSentimentAnalysis/
+SeeTweets is a built with p5.js and uses Google Scripts for backend processing.
+Live at: seetweets.com
