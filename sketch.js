@@ -57,11 +57,22 @@ function windowResized() {
 function draw(){
   c = color(h, s, b);
   background(c);
+
+  if (millis() < 2000) {
+    background(c);
+    fill(0, 0, 255, 750 - millis()/3);
+    textSize(80);
+    text("SeeTweets", windowWidth/2 - 200, windowHeight/2 - 80, 600, 300);
+    noStroke();
+    rect(windowWidth/2 - 205, windowHeight/2, 420, 8);
+    return;
+  }
+
   draw_back_text();
 
   if (!resp || !resp2) {
     textSize(100);
-    //text("Loading", windowWidth/10, windowHeight/2 - 100);
+    text(tweet, windowWidth/2 - 300, windowHeight/2 - 125, 600, 300);
     flip = true;
     return; //wait for http response
   }
@@ -111,13 +122,11 @@ function convert(vals){
     var str = resp2.values[i][0];
     var score = vals[i][0];
 
-    var tweet = str.split("&")[2]; //store username and if rt
     var location = str.split("&")[1];
+    var tweet = str.split("&")[2]; //store username and if rt
     tweet = "\"" + tweet + "\"";
 
-    if (parseInt(score) > 2 && !tweet.includes("birthday") && !tweet.includes("bday") && !tweet.includes("b-day")) {
-      arr.push([tweet, parseInt(score), location]);
-    }
+    arr.push([tweet, parseInt(score), location]);
   }
 
   print(arr);
@@ -136,7 +145,7 @@ function update_call() {
 function mousePressed() {
   if (mouseX > windowWidth/2 + 165 && mouseY > windowHeight/2 + 114) {
     if (mouseX < windowWidth/2 + 465 && mouseY < windowHeight/2 + 130) {
-      let message = "I liked a tweet " + lastTweet + "from https://go.umd.edu/seetweets"; // %23SeeTweet";
+      let message = "I liked a tweet from SeeTweets.com: " + lastTweet; // %23SeeTweet";
       window.open('https://twitter.com/intent/tweet/?text=' + message + '&amp;url=" target="_blank"');
     }
   }
@@ -150,7 +159,7 @@ function draw_back_text() {
   text("Displaying live tweets - anonymously from around the world", windowWidth/50, 20, 1000, 300);
 
   textSize(15);
-  text("Andrew Chalfant 2020", windowWidth/50, windowHeight - 25, 400, 200);
+  text("About", windowWidth/50, windowHeight - 25, 400, 200);
 
   fill(0, 0, 255, 0);
   stroke(0, 0, 255, 100);
@@ -171,13 +180,14 @@ function draw_text() {
   if (dataMap[index]) {
     tweet = dataMap[index][0];
     lastTweet = tweet;
+    
     if (tweet.length > 180) {
       textSize(22); 
     } else if (tweet.length > 130) {
       textSize(25);
       //fade_rate = 2;
     } else if (tweet.length < 30) {
-      textSize(45);
+      textSize(40);
     } else {
       textSize(33);
       //fade_rate = 2;
@@ -186,13 +196,13 @@ function draw_text() {
     textAlign(CENTER);
     noStroke();
     fill(0, 0, 255, fade);
-    text(dataMap[index][0], windowWidth/2 - 300, windowHeight/2 - 125, 600, 300);
+    text(tweet, windowWidth/2 - 300, windowHeight/2 - 125, 600, 300);
    
     textSize(15);
     textAlign(LEFT);
 
     var location = "unknown";
-    if (dataMap[index][2] && dataMap[index][2].length < 20) {
+    if (dataMap[index][2] && dataMap[index][2] != "" && dataMap[index][2].length < 20) {
       location = dataMap[index][2];
       text("from: " + location, windowWidth/2 - 320, windowHeight/2 + 115, 600, 300);
     }

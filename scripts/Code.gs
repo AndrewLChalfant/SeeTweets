@@ -73,23 +73,28 @@ function live() {
         if (!profanity_check) { //do not add tweet
           continue;
         }
-        if (tweets[i].full_text.includes("RT @")) { //exclude retweets
-            rt_count++;
+        
+        if (tweet_text.includes("birthday") || tweet_text.includes("bday") || tweets[i].full_text.includes("RT @")) { //exclude retweets
+            continue;
+          
         } else {
           
           var date = new Date(tweets[i].created_at);
-          var end_str = date.toLocaleString() + " & " + tweets[i].user.location + " & " + tweet_text;
+          var end_str = date.toLocaleString() + "&" + tweets[i].user.location + "&" + tweet_text;
           var tweet_score = ((scores(tweet_text) / parseFloat(tweet_text.length)) * 100).toFixed(3);
-          dataMap.setReplace(count + i - rt_count, end_str, tweet_score);
+          
+          if (tweet_score > 5) { //ensure tweets have high enough score
+            count += 1;
+            dataMap.setReplace(count, end_str, tweet_score);
+          }
+        }
+        
+        if (count > tweet_cap) { //reset once count reaches 100 
+          count = 1;
         }
       }
-      
-      i = i - rt_count;
-      if (count + i > tweet_cap) { //reset once count reaches 100 
-        dataMap.set('count', 1);
-      } else {
-        dataMap.set('count', count + i);
-      }
+     
+      dataMap.set('count', count);
     }
   }
 }
