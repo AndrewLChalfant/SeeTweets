@@ -11,7 +11,10 @@ let timer = 0;
 let timer2 = 0;
 let dataMap;
 let flip_switch = true;
-var button;
+let about_switch = false;
+
+var click;
+var email;
 
 let url = "https://sheets.googleapis.com/v4/spreadsheets/176z44O-mgCBX20skzYfsT7Kx1yibE4jguVcvXEHpn3M/values/";
 let sheet_name = "live" + "!";
@@ -34,6 +37,9 @@ let s = 175;
 let b = 225;
 let c;
 
+let input;
+let button;
+
 function preload() {
   //fontRegular =loadFont('Song.ttf');
 }
@@ -46,8 +52,15 @@ function setup() {
   setAttributes('antialias', true);
   update_call();
   //textFont(fontRegular);
-} 
+  index = int(Math.random() * 30);
+  print(index);
+  input = createInput('');
+  button = createButton('submit');
+}
 
+function myInputEvent() {
+  console.log('you are typing: ', this.value());
+}
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
@@ -58,6 +71,7 @@ function draw(){
   c = color(h, s, b);
   background(c);
 
+  //loading screen
   if (millis() < 2000) {
     background(c);
     fill(0, 0, 255, 750 - millis()/3);
@@ -83,7 +97,7 @@ function draw(){
     flip = false;
   }
 
-  if (millis() >= 8000 + timer2 + Math.random()) { //update once per 8 secs 
+  if (millis() >= 8000 + timer2 + Math.random() || click) { //update once per 8 secs 
     index += 1;
     fade = 0;
     flip_switch = true;
@@ -91,6 +105,7 @@ function draw(){
     if (index >= dataMap.length - 2) {
       index = 0;
     }
+    click = false;
   }
 
   //print(fade);
@@ -105,14 +120,22 @@ function draw(){
     fade -= fade_rate;
   }
 
-  if (millis() >= 60000 + timer) {
+  if (millis() >= 30000 + timer) {
     resp = null;
     update_call();
     timer = millis();
     return;
   }
 
-  draw_text();
+  if (about_switch) {
+    draw_about();
+  } else {
+    if (input && button) {
+      input.hide()
+      button.hide();
+    }
+    draw_text();
+  }
 }
 
 //get tweets from google sheet and return dict of relevant strings
@@ -149,6 +172,12 @@ function mousePressed() {
       window.open('https://twitter.com/intent/tweet/?text=' + message + '&amp;url=" target="_blank"');
     }
   }
+
+  if (mouseX > 0 && mouseX < 20) {
+    if (mouseY > 0 && mouseY < 20) {
+      about_switch = !about_switch;
+    }
+  }
 }
 
 //draw supporting graphics
@@ -180,7 +209,7 @@ function draw_text() {
   if (dataMap[index]) {
     tweet = dataMap[index][0];
     lastTweet = tweet;
-    
+
     if (tweet.length > 180) {
       textSize(22); 
     } else if (tweet.length > 130) {
@@ -214,4 +243,42 @@ function draw_text() {
     noStroke();
     //b += dataMap[index][1] / 500;
   }
+}
+
+function draw_about() {
+  if (input && button) {
+    input.show();
+    button.show();
+  }
+
+  fill(255);
+  c = color(h, s, b);
+  background(c);
+  let temp_text = "SeeTweets displays live tweets from around the world";
+  text(temp_text, windowWidth/2 - 320, windowHeight/2 + 115, 600, 300);
+  input.position(20, 65);
+  button.position(input.x + input.width, 65);
+  button.mousePressed(send_contact); 
+}
+
+//click to move to next tweet
+function mouseClicked() {
+  if (mouseX > windowWidth/2 - 300 && mouseX < windowWidth/2 + 300) {
+    if (mouseY > windowHeight/2 - 125 && mouseY < windowHeight/2 + 100)
+    click = true;
+  }
+}
+
+function send_contact() {
+  print(input.value());
+  
+  Email.send({
+  //SecureToken : "8f3f3aff-06d2-493b-aa98-1d135b73a48b",
+  To : "achalfan@terpmail.umd.edu", 
+  From : "noreply@seetweets.com",
+  Subject : "Email Test1",
+  Body : input.value()
+  }).then(
+        message => alert('Email was sent to ' + input.value())
+    );
 }
