@@ -15,3 +15,5 @@ This project is licensed under an MIT license. http://www.opensource.org/license
 
 Copyright © 2020 Andrew Chalfant
 
+
+Inspired by http://www.wefeelfine.org/ and http://twistori.com/
