@@ -3,7 +3,7 @@
 ## About
 SeeTweets is an open source project that displays anonymous tweets from around the world in realtime. Currently this site is configured to display tweets that contain the keyword "happy".
 
-SeeTweets is a built with p5.js and uses Google Scripts for backend processing. Tweets are queried every minute and then given a sentiment score based on the presence positive or negative vocabulary in the tweets. Scores are calculated using using the AFINN-en-165 standard.  
+SeeTweets is a built with p5.js and uses Google Scripts for backend processing. Tweets are queried every minute and then given a sentiment score based on the presence positive or negative vocabulary in the tweets. Scores are calculated using using the AFINN-en-165 standard. If user's have set a location for their profile, it will appear with their tweet.  
 
 
 Live at: [SeeTweets.com](http://seetweets.com)
