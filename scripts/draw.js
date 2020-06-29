@@ -27,10 +27,10 @@ function draw_back_text() {
   rect(windowWidth/2 + 150, windowHeight/2 + 110, 150, 20, 5);
   //textFont(fontRegular);
 
-  textSize(12);
+  textSize(11);
   fill(c);
   if (windowWidth > 600) {
-    text("Share on Twitter", windowWidth/2 + 172, windowHeight/2 + 116, 600, 300);
+    text("Share on Twitter", windowWidth/2 + 175, windowHeight/2 + 116, 600, 300);
   } else {
       text("Share on Twitter", windowWidth/2 + 150, windowHeight/2 + 116, 600, 300);
   }
@@ -67,7 +67,9 @@ function draw_text() {
     var location = "unknown";
     if (dataMap[index][2] && dataMap[index][2] != "" && dataMap[index][2].length < 20) {
       location = dataMap[index][2];
+      textStyle(NORMAL);
       text("from: " + location, windowWidth/2 - 310, windowHeight/2 + 115, 600, 300);
+      textStyle(BOLD);
     }
 
     stroke(255);
@@ -109,10 +111,14 @@ function draw_about() {
   text("x", windowWidth/2 + 250, windowHeight/2 - 290, 600, 300);
 
   textSize(20);
-  let temp_text = "Everyday we are bombarded with negative content distributed over the internet. Unfortunately this abundance of negativity often drowns out more uplifting messages.\n\nThe purpose of SeeTweets is simple: to highlight positive content. SeeTweets anonymously displays live tweets from around the world in real time.\n\nSeeTweet is an open source project built by Andrew Chalfant with p5.js and Google Scripts. To learn more click";
+  let temp_text = "Everyday we are bombarded with negative content posted across the internet." + 
+                  "Unfortunately this abundance of negativity often drowns out more uplifting messages.\n\n" + 
+                  "The purpose of SeeTweets is simple: to highlight positive content." +
+                  "SeeTweets anonymously displays live tweets from around the world in real time.\n\n" + 
+                  "SeeTweet is an open source project built by Andrew Chalfant with p5.js and Google Scripts. To learn more click here.";
   text(temp_text, windowWidth/2 - 230, windowHeight/2 - 180, 500, 500);
   textStyle(BOLD);
-  text("here.", windowWidth/2 - 70, windowHeight/2 + 95, 500, 500);
+  //text("here.", windowWidth/2 - 70, windowHeight/2 + 95, 500, 500);
 }
 
 
@@ -120,7 +126,6 @@ function draw_about() {
 function draw_contact() {
   //text after button press
   if (drawError) {
-    print("Draw error");
     fill(0, 0, 255, errorFill);
     text(contactMessage, text_input.x, button.y + button.height + 10, 500, 500);
   }

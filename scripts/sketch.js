@@ -94,7 +94,6 @@ function draw(){
 
   if (flip) {
     dataMap = convert(resp.values); 
-    print("Converting");
     flip = false;
   }
 
@@ -188,7 +187,7 @@ function mousePressed() {
     }
 
   } else if (page == 1) { //about page
-    if (clickHelper(windowWidth/2 + 250, windowWidth/2 + 300, windowHeight/2 - 290, windowHeight/2 - 220)) {
+    if (clickHelper(windowWidth/2 + 240, windowWidth/2 + 310, windowHeight/2 - 300, windowHeight/2 - 230)) {
       page = 0; 
     }
 
@@ -197,7 +196,7 @@ function mousePressed() {
     }
 
   } else if (page == 2) { //contact page
-    if (clickHelper(windowWidth/2 + 250, windowWidth/2 + 300, windowHeight/2 - 290, windowHeight/2 - 220)) {
+    if (clickHelper(windowWidth/2 + 250, windowWidth/2 + 300, windowHeight/2 - 300, windowHeight/2 - 230)) {
       page = 0; 
     }
 
