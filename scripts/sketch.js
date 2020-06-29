@@ -44,6 +44,7 @@ function preload() {
 }
 
 function setup() {
+  textStyle(BOLD);
   colorMode(HSB, 255);
   pixelDensity(1);
 
@@ -55,6 +56,9 @@ function setup() {
   name_input = createInput('');
   text_input = createElement("textarea", "");
   button = createButton('Send');
+
+  aboutX = windowWidth - 200;
+  contactX = windowWidth - 100;
 }
 
 function windowResized() {
@@ -77,12 +81,12 @@ function draw(){
     return;
   }
 
-  if (page == 0 && (!resp || !resp2)) {
+  /*if (page == 0 && (!resp || !resp2)) {
     textSize(100);
     text(lastTweet, windowWidth/2 - 300, windowHeight/2 - 125, 600, 300);
     flip = true;
     return; //wait for http response
-  }
+  }*/
 
   if (flip) {
     dataMap = convert(resp.values); 
@@ -161,21 +165,21 @@ function update_call() {
 }
 
 function mousePressed() {
-  if (clickHelper(windowWidth - 200, windowWidth - 130, 20, 50)) {
+  if (clickHelper(aboutX, aboutX + 60, 20, 50)) {
     page = 1; //visit about page
   }
 
-  if (clickHelper(windowWidth - 110, windowWidth - 40, 20, 50)) {
+  if (clickHelper(contactX, contactX + 60, 20, 50)) {
     page = 2; //visit contact page
   }
 
   if (page == 0) { //home page
-    if (clickHelper(windowWidth/2 + 165, windowWidth/2 + 465, windowHeight/2 + 114, windowHeight/2 + 130)) { //share tweet
+    if (clickHelper(windowWidth/2 + 145, windowWidth/2 + 465, windowHeight/2 + 114, windowHeight/2 + 130)) { //share tweet
         let message = "I liked a tweet from SeeTweets.com: " + lastTweet; // %23SeeTweet";
         window.open('https://twitter.com/intent/tweet/?text=' + message + '&amp;url=" target="_blank"');
     }
 
-    if (clickHelper(windowWidth/2 - 300, windowWidth/2 + 300, windowHeight/2 - 125, windowHeight/2 + 100)) {
+    if (clickHelper(windowWidth/2 - 300, windowWidth/2 + 300, windowHeight/2 - 120, windowHeight/2 + 110)) {
         click = true; //skip tweet
     }
 
