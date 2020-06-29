@@ -63,6 +63,10 @@ function setup() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  if (windowWidth > 850) {
+    aboutX = windowWidth - 200;
+    contactX = windowWidth - 100;
+  }
 }
 
 
@@ -188,7 +192,7 @@ function mousePressed() {
       page = 0; 
     }
 
-    if (clickHelper(windowWidth/2 - 100, windowWidth/2 + 100, windowHeight/2 + 100, windowHeight/2 + 200)) {
+    if (clickHelper(windowWidth/2 - 150, windowWidth/2 + 120, windowHeight/2 + 90, windowHeight/2 + 120)) {
       window.open("https://github.com/AndrewLChalfant/SeeTweets");
     }
 
