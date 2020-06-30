@@ -111,10 +111,10 @@ function draw_about() {
   text("x", windowWidth/2 + 250, windowHeight/2 - 290, 600, 300);
 
   textSize(20);
-  let temp_text = "Everyday we are bombarded with negative content posted across the internet." + 
-                  "Unfortunately this abundance of negativity often drowns out more uplifting messages.\n\n" + 
-                  "The purpose of SeeTweets is simple: to highlight positive content." +
-                  "SeeTweets anonymously displays live tweets from around the world in real time.\n\n" + 
+  let temp_text = "Everyday we are bombarded with negative content posted across the internet. " + 
+                  "Unfortunately this abundance of negativity often drowns out more uplifting messages. \n\n" + 
+                  "The purpose of SeeTweets is simple: to highlight positive content. " +
+                  "SeeTweets anonymously displays live tweets from around the world in real time. \n\n" + 
                   "SeeTweet is an open source project built by Andrew Chalfant with p5.js and Google Scripts. To learn more click here.";
   text(temp_text, windowWidth/2 - 230, windowHeight/2 - 180, 500, 500);
   textStyle(BOLD);
